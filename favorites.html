@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saved properties — Estate Property Management</title>
+<meta name="description" content="The properties you have saved, ready to compare.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Fallback copy of style.css, so the page still looks right if the
+     stylesheet is not found. Delete this <style> block once the link
+     above resolves (all files in the same folder). -->
+<style>
+
+
+/* 01. Design tokens ------------------------------------------------------ */
+:root {
+  /* Ink-on-survey-paper palette: deep navy drafting ink, cool paper,
+     verdigris for actions, brass reserved for saved/starred items only. */
+  --ink:        #0e2033;
+  --ink-soft:   #24435f;
+  --slate:      #5c7186;
+  --line:       #d4dce1;
+  --line-soft:  #e6ecef;
+  --mist:       #eef2f4;
+  --paper:      #ffffff;
+  --verd:       #12705c;
+  --verd-dark:  #0b5344;
+  --verd-wash:  #e3f0ec;
+  --brass:      #b8860f;
+  --brass-wash: #fdf3d9;
+  --rust:       #a8402b;
+  --rust-wash:  #fbe9e5;
+
+  --radius:     10px;
+  --radius-sm:  6px;
+  --rail-w:     244px;
+  --shadow:     0 1px 2px rgba(14, 32, 51, .06), 0 8px 24px -16px rgba(14, 32, 51, .28);
+
+  --step--1: .8125rem;
+  --step-0:  .9375rem;
+  --step-1:  1.125rem;
+  --step-2:  1.5rem;
+  --step-3:  2rem;
+  --step-4:  2.75rem;
+}
+
+/* 02. Base & typography -------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--mist);
+  color: var(--ink);
+  font-family: "Archivo", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: var(--step-0);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-stretch: 112%;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+}
+
+h1 { font-size: var(--step-3); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+
+p  { margin: 0 0 1em; max-width: 68ch; }
+a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+.muted { color: var(--slate); }
+.small { font-size: var(--step--1); }
+
+:focus-visible {
+  outline: 2px solid var(--verd);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute; left: 12px; top: -48px; z-index: 50;
+  background: var(--ink); color: #fff;
+  padding: 10px 16px; border-radius: var(--radius-sm);
+  transition: top .15s ease;
+}
+.skip-link:focus { top: 12px; }
+
+/* The wordmark: a surveyor's tick before the name, used on every page. */
+.wordmark {
+  display: inline-flex; align-items: baseline; gap: 9px;
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-stretch: 125%;
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: .01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.wordmark::before {
+  content: "";
+  width: 12px; height: 12px;
+  border-left: 2px solid var(--verd);
+  border-bottom: 2px solid var(--verd);
+  transform: translateY(-1px);
+}
+.wordmark span { font-weight: 400; font-stretch: 100%; color: var(--slate); }
+
+/* 03. Buttons, fields, chips, badges -------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--verd);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn:hover  { background: var(--verd-dark); }
+.btn:active { transform: translateY(1px); }
+
+.btn-wide { width: 100%; }
+
+.btn-quiet {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--ink);
+}
+.btn-quiet:hover { background: var(--paper); border-color: var(--ink-soft); }
+
+.btn-danger { background: var(--rust); }
+.btn-danger:hover { background: #8d3323; }
+
+.btn-sm { padding: 7px 12px; font-size: var(--step--1); }
+
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--verd);
+  box-shadow: 0 0 0 3px var(--verd-wash);
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field .hint { margin-top: 6px; font-size: var(--step--1); color: var(--slate); }
+
+.field-error input,
+.field-error select { border-color: var(--rust); }
+.field .error {
+  display: none;
+  margin-top: 6px;
+  font-size: var(--step--1);
+  color: var(--rust);
+}
+.field-error .error { display: block; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+
+.check {
+  display: flex; align-items: flex-start; gap: 9px;
+  font-size: var(--step--1); color: var(--ink-soft);
+}
+.check input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--verd); }
+
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: var(--mist);
+  color: var(--ink-soft);
+}
+.badge-open     { background: var(--brass-wash); color: #7a5a07; }
+.badge-progress { background: var(--verd-wash);  color: var(--verd-dark); }
+.badge-closed   { background: var(--mist);       color: var(--slate); }
+.badge-due      { background: var(--rust-wash);  color: var(--rust); }
+
+.chip {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: var(--step--1);
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+.chip:hover { border-color: var(--ink-soft); }
+.chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.notice {
+  display: none;
+  margin-bottom: 18px;
+  padding: 11px 14px;
+  border-left: 3px solid var(--rust);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--rust-wash);
+  color: #7d3020;
+  font-size: var(--step--1);
+}
+.notice.is-visible { display: block; }
+.notice-ok { border-left-color: var(--verd); background: var(--verd-wash); color: var(--verd-dark); }
+
+/* 04. Auth pages ---------------------------------------------------------- */
+.auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+/* Left panel is a site plan drawn in CSS: ruled survey paper with three
+   plots, the way a property file actually opens. */
+.plan {
+  position: relative;
+  overflow: hidden;
+  padding: 44px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background:
+    linear-gradient(transparent 23px, rgba(255, 255, 255, .07) 23px),
+    linear-gradient(90deg, transparent 23px, rgba(255, 255, 255, .07) 23px),
+    linear-gradient(160deg, #163b52 0%, #0e2033 72%);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  background-color: var(--ink);
+  color: #eaf0f3;
+}
+.plan h1 {
+  max-width: 13ch;
+  font-size: var(--step-4);
+  color: #fff;
+}
+.plan p { max-width: 42ch; color: #a9bcca; }
+
+.plan-head { position: relative; z-index: 2; }
+.plan-head .wordmark { color: #fff; }
+.plan-head .wordmark span { color: #8fa6b5; }
+.plan-head .wordmark::before { border-color: #4fbfa2; }
+
+.plan-body { position: relative; z-index: 2; margin: 48px 0; }
+
+/* the plots */
+.plots { display: flex; gap: 14px; margin-top: 34px; }
+.plot {
+  flex: 1;
+  padding: 14px 14px 18px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 4px;
+  font-size: var(--step--1);
+  color: #a9bcca;
+}
+.plot strong {
+  display: block;
+  margin-bottom: 2px;
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}
+.plot--let { border-color: rgba(79, 191, 162, .6); background: rgba(79, 191, 162, .1); }
+
+.plan-foot { position: relative; z-index: 2; font-size: var(--step--1); color: #8fa6b5; }
+
+.auth-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 44px 32px;
+  background: var(--paper);
+}
+.auth-card { width: 100%; max-width: 392px; }
+.auth-card h2 { margin-bottom: 6px; }
+.auth-card > p { color: var(--slate); }
+
+.auth-form { margin-top: 26px; }
+
+.auth-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin: 4px 0 22px;
+  font-size: var(--step--1);
+}
+
+.auth-alt {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+  font-size: var(--step--1);
+  color: var(--slate);
+}
+
+.role-pick { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.role-pick input { position: absolute; opacity: 0; pointer-events: none; }
+.role-pick label {
+  margin: 0;
+  padding: 10px 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.role-pick input:checked + label {
+  border-color: var(--verd);
+  background: var(--verd-wash);
+  color: var(--verd-dark);
+  font-weight: 600;
+}
+.role-pick input:focus-visible + label { outline: 2px solid var(--verd); outline-offset: 2px; }
+
+.meter { display: flex; gap: 4px; margin-top: 8px; }
+.meter i {
+  flex: 1; height: 3px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.meter[data-level="1"] i:nth-child(1) { background: var(--rust); }
+.meter[data-level="2"] i:nth-child(-n+2) { background: var(--brass); }
+.meter[data-level="3"] i { background: var(--verd); }
+
+/* 05. App shell ----------------------------------------------------------- */
+.app { display: grid; grid-template-columns: var(--rail-w) minmax(0, 1fr); min-height: 100vh; }
+
+.rail {
+  position: sticky; top: 0;
+  align-self: start;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  padding: 22px 16px;
+  background: var(--ink);
+  color: #c7d5de;
+}
+.rail-head { padding: 0 8px 22px; }
+.rail-head .wordmark { color: #fff; }
+.rail-head .wordmark span { color: #8fa6b5; }
+.rail-head .wordmark::before { border-color: #4fbfa2; }
+
+.rail nav { display: flex; flex-direction: column; gap: 2px; }
+.rail nav a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: #c7d5de;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+.rail nav a:hover { background: rgba(255, 255, 255, .07); color: #fff; }
+.rail nav a[aria-current="page"] { background: rgba(255, 255, 255, .12); color: #fff; font-weight: 600; }
+.rail nav a svg { flex: none; }
+
+.rail-foot { margin-top: auto; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .14); }
+.rail-user { display: flex; align-items: center; gap: 10px; padding: 8px; }
+.rail-user .avatar { background: rgba(255, 255, 255, .14); color: #fff; }
+.rail-user b { display: block; color: #fff; font-weight: 600; }
+.rail-user span { font-size: var(--step--1); color: #8fa6b5; }
+
+.avatar {
+  display: grid; place-items: center;
+  flex: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--verd-wash);
+  color: var(--verd-dark);
+  font-weight: 700;
+  font-size: var(--step--1);
+}
+.avatar-lg { width: 68px; height: 68px; font-size: 1.5rem; }
+
+.main { min-width: 0; }
+
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.topbar h1 { font-size: var(--step-1); }
+.topbar .spacer { margin-left: auto; }
+
+.search {
+  position: relative;
+  flex: 1;
+  max-width: 340px;
+}
+.search input {
+  width: 100%;
+  padding: 10px 13px 10px 38px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--mist);
+  font: inherit;
+}
+.search input:focus {
+  outline: none;
+  border-color: var(--verd);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--verd-wash);
+}
+.search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--slate); }
+
+.page { padding: 28px 32px 56px; }
+.page > header { margin-bottom: 22px; }
+.page > header p { color: var(--slate); }
+
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; margin: 34px 0 14px;
+}
+.section-head:first-child { margin-top: 0; }
+
+/* 06. Dashboard ----------------------------------------------------------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--line-soft);
+}
+.stat { padding: 18px 20px; background: var(--paper); }
+.stat b {
+  display: block;
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1.1;
+}
+.stat span { font-size: var(--step--1); color: var(--slate); }
+.stat--alert b { color: var(--rust); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+
+.layout-split { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+
+.tickets { padding: 6px 20px 14px; }
+.ticket {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.ticket:last-child { border-bottom: 0; }
+.ticket-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ticket b { font-weight: 600; }
+.ticket p { margin: 3px 0 0; font-size: var(--step--1); color: var(--slate); }
+
+.rent-due {
+  padding: 20px;
+  border-left: 3px solid var(--brass);
+}
+.rent-due .amount {
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* 07. Property cards ------------------------------------------------------ */
+.props {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 18px;
+}
+
+.prop {
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Photo stand-in: a flat plan swatch, not a grey box. */
+.prop-plan {
+  position: relative;
+  height: 128px;
+  background-color: var(--ink-soft);
+  background-image:
+    linear-gradient(transparent 15px, rgba(255, 255, 255, .1) 15px),
+    linear-gradient(90deg, transparent 15px, rgba(255, 255, 255, .1) 15px);
+  background-size: 16px 16px;
+}
+.prop-plan .kind {
+  position: absolute; left: 12px; bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, .92);
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.prop--commercial .prop-plan { background-color: #3a4a5c; }
+.prop--let .prop-plan { background-color: var(--verd-dark); }
+
+.fav {
+  position: absolute; top: 10px; right: 10px;
+  display: grid; place-items: center;
+  width: 34px; height: 34px;
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, .92);
+  color: var(--slate);
+  cursor: pointer;
+  transition: color .15s ease, transform .15s ease;
+}
+.fav:hover { transform: scale(1.06); color: var(--brass); }
+.fav[aria-pressed="true"] { color: var(--brass); }
+.fav[aria-pressed="true"] svg { fill: currentColor; }
+
+.prop-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+.prop-body h3 { font-size: 1.0625rem; }
+.prop-addr { margin: 3px 0 12px; font-size: var(--step--1); color: var(--slate); }
+
+.prop-facts {
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.prop-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid var(--line-soft);
+}
+.rent {
+  font-family: "Archivo Expanded", "Archivo", sans-serif;
+  font-size: 1.1875rem;
+  font-weight: 600;
+}
+.rent small { font-weight: 400; font-size: var(--step--1); color: var(--slate); font-stretch: 100%; }
+
+/* 08. Profile ------------------------------------------------------------- */
+.profile-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+
+.identity {
+  display: flex; align-items: center; gap: 16px;
+  padding: 22px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.identity h2 { font-size: var(--step-2); }
+.identity p { margin: 2px 0 0; color: var(--slate); font-size: var(--step--1); }
+
+.panel-body { padding: 22px; }
+.panel-body > h3 { margin-bottom: 16px; }
+
+.form-actions {
+  display: flex; gap: 10px; align-items: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.facts { margin: 0; padding: 0; list-style: none; }
+.facts li {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: var(--step--1);
+}
+.facts li:last-child { border-bottom: 0; }
+.facts dt, .facts .k { color: var(--slate); }
+.facts .v { font-weight: 600; text-align: right; }
+
+/* 09. Favorites ----------------------------------------------------------- */
+.empty {
+  padding: 56px 24px;
+  text-align: center;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+}
+.empty h3 { margin-bottom: 6px; }
+.empty p { margin: 0 auto 18px; color: var(--slate); }
+
+.compare-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: var(--paper);
+  border: 1px solid var(--line-soft);
+}
+.compare-bar .spacer { margin-left: auto; }
+
+/* 10. Responsive ---------------------------------------------------------- */
+@media (max-width: 1080px) {
+  .layout-split,
+  .profile-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .plan { padding: 30px 26px; }
+  .plan h1 { font-size: var(--step-3); }
+  .plan-body { margin: 26px 0; }
+  .plots { display: none; }
+  .plan-foot { display: none; }
+
+  .app { grid-template-columns: 1fr; }
+  .rail {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    overflow-x: auto;
+  }
+  .rail-head { padding: 0 8px 0 0; }
+  .rail nav { flex-direction: row; }
+  .rail nav a { white-space: nowrap; }
+  .rail-foot { margin: 0 0 0 auto; padding: 0 0 0 14px; border-top: 0; border-left: 1px solid rgba(255, 255, 255, .14); }
+  .rail-user span { display: none; }
+}
+
+@media (max-width: 640px) {
+  .topbar { flex-wrap: wrap; padding: 14px 18px; }
+  .search { max-width: none; order: 3; width: 100%; }
+  .page { padding: 20px 18px 44px; }
+  .field-row { grid-template-columns: 1fr; }
+  .props { grid-template-columns: 1fr; }
+  .identity { flex-direction: column; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+@media print {
+  .rail, .topbar, .fav, .btn { display: none; }
+  body { background: #fff; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="app">
+
+  <aside class="rail">
+    <div class="rail-head">
+      <a class="wordmark" href="dashboard.html">Estate <span>Property Management</span></a>
+    </div>
+
+    <nav aria-label="Main">
+      <a href="dashboard.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        Dashboard
+      </a>
+      <a href="favorites.html" aria-current="page">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m12 20-7.5-7a4.5 4.5 0 1 1 7.5-5 4.5 4.5 0 1 1 7.5 5Z"/></svg>
+        Saved properties
+      </a>
+      <a href="profile.html">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+        My profile
+      </a>
+    </nav>
+
+    <div class="rail-foot">
+      <div class="rail-user">
+        <span class="avatar" id="railAvatar" aria-hidden="true">RS</span>
+        <span>
+          <b id="railName">Rishabh Singh</b>
+          <span id="railRole">Tenant</span>
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h1>Saved properties</h1>
+      <div class="spacer"></div>
+      <button class="btn btn-quiet btn-sm" id="signout" type="button">Sign out</button>
+    </header>
+
+    <main class="page" id="main">
+      <header>
+        <h2 id="headline">Saved properties</h2>
+        <p>Shortlisted units stay here until you remove them. Compare rent and size side by side before you visit.</p>
+      </header>
+
+      <div class="compare-bar" id="bar" hidden>
+        <span class="small muted" id="summary"></span>
+        <div class="spacer"></div>
+        <label class="small muted" for="sort">Sort by</label>
+        <select id="sort" style="padding:7px 10px;border:1px solid var(--line);border-radius:6px;font:inherit">
+          <option value="recent">Recently saved</option>
+          <option value="low">Rent: low to high</option>
+          <option value="high">Rent: high to low</option>
+        </select>
+        <button class="btn btn-quiet btn-sm" type="button" id="clearAll">Remove all</button>
+      </div>
+
+      <div class="props" id="grid"></div>
+
+      <div class="empty" id="empty" hidden>
+        <h3>Nothing saved yet</h3>
+        <p>Tap the heart on any listing to keep it here for later.</p>
+        <a class="btn" href="dashboard.html">Browse properties</a>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+/* Same demo catalogue as the dashboard. When the backend arrives this
+   becomes one shared fetch instead of a copy in each page. */
+const PROPERTIES = [
+  { id: 'p1', name: 'Shanti Residency', unit: 'Flat 402', area: 'Krishna Nagar, Mathura',
+    type: 'residential', status: 'let', rent: 18500, beds: 3, baths: 2, size: '1,180 sq ft', furnished: true },
+  { id: 'p2', name: 'Krishna Plaza', unit: 'Shop 7', area: 'Masani Road, Mathura',
+    type: 'commercial', status: 'available', rent: 42000, size: '640 sq ft', frontage: 'Main road', furnished: false },
+  { id: 'p3', name: 'Yamuna Heights', unit: 'Flat 106', area: 'Govardhan Road, Mathura',
+    type: 'residential', status: 'available', rent: 14000, beds: 2, baths: 2, size: '890 sq ft', furnished: true },
+  { id: 'p4', name: 'Vrindavan Greens', unit: 'Villa 12', area: 'Chhatikara, Vrindavan',
+    type: 'residential', status: 'available', rent: 36000, beds: 4, baths: 3, size: '2,150 sq ft', furnished: false },
+  { id: 'p5', name: 'Radha Business Hub', unit: 'Office 3B', area: 'NH-19 Bypass, Mathura',
+    type: 'commercial', status: 'available', rent: 55000, size: '1,400 sq ft', frontage: 'Second floor', furnished: true },
+  { id: 'p6', name: 'Gokul Enclave', unit: 'Flat 8', area: 'Gokul, Mathura',
+    type: 'residential', status: 'let', rent: 11500, beds: 2, baths: 1, size: '720 sq ft', furnished: false }
+];
+
+const FAVS = 'estate_favs';
+const SESSION = 'estate_session';
+
+const money = n => '\u20B9' + n.toLocaleString('en-IN');
+const favs = () => JSON.parse(localStorage.getItem(FAVS) || '[]');
+const saveFavs = list => localStorage.setItem(FAVS, JSON.stringify(list));
+
+(function loadSession() {
+  const raw = localStorage.getItem(SESSION);
+  if (!raw) return;
+  const user = JSON.parse(raw);
+  document.getElementById('railName').textContent = user.name;
+  document.getElementById('railAvatar').textContent =
+    user.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
+  document.getElementById('railRole').textContent =
+    { tenant: 'Tenant', owner: 'Property owner', admin: 'Administrator' }[user.role] || 'Tenant';
+})();
+
+document.getElementById('signout').addEventListener('click', function () {
+  localStorage.removeItem(SESSION);
+  window.location.href = 'login.html';
+});
+
+const grid = document.getElementById('grid');
+const empty = document.getElementById('empty');
+const bar = document.getElementById('bar');
+const summary = document.getElementById('summary');
+const headline = document.getElementById('headline');
+const sort = document.getElementById('sort');
+
+function factsFor(p) {
+  const bits = [];
+  if (p.beds) bits.push(p.beds + ' bed');
+  if (p.baths) bits.push(p.baths + ' bath');
+  if (p.size) bits.push(p.size);
+  if (p.frontage) bits.push(p.frontage);
+  bits.push(p.furnished ? 'Furnished' : 'Unfurnished');
+  return bits.map(b => '<li>' + b + '</li>').join('');
+}
+
+function cardFor(p) {
+  return '' +
+  '<article class="prop prop--' + p.type + (p.status === 'let' ? ' prop--let' : '') + '">' +
+    '<div class="prop-plan">' +
+      '<button class="fav" type="button" data-id="' + p.id + '" aria-pressed="true" ' +
+        'aria-label="Remove ' + p.name + ' ' + p.unit + ' from saved">' +
+        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
+        '<path d="m12 20-7.5-7a4.5 4.5 0 1 1 7.5-5 4.5 4.5 0 1 1 7.5 5Z"/></svg>' +
+      '</button>' +
+      '<span class="kind">' + (p.type === 'commercial' ? 'Commercial' : 'Residential') + '</span>' +
+    '</div>' +
+    '<div class="prop-body">' +
+      '<h3>' + p.unit + ', ' + p.name + '</h3>' +
+      '<p class="prop-addr">' + p.area + '</p>' +
+      '<ul class="prop-facts">' + factsFor(p) + '</ul>' +
+      '<div class="prop-foot">' +
+        '<span class="rent">' + money(p.rent) + ' <small>/ month</small></span>' +
+        '<span class="badge ' + (p.status === 'let' ? 'badge-closed' : 'badge-progress') + '">' +
+          (p.status === 'let' ? 'Let' : 'Available') + '</span>' +
+      '</div>' +
+    '</div>' +
+  '</article>';
+}
+
+function render() {
+  const ids = favs();
+  let list = PROPERTIES.filter(p => ids.includes(p.id));
+
+  if (sort.value === 'low') { list.sort((a, b) => a.rent - b.rent); }
+  else if (sort.value === 'high') { list.sort((a, b) => b.rent - a.rent); }
+  else { list.sort((a, b) => ids.indexOf(b.id) - ids.indexOf(a.id)); }
+
+  grid.innerHTML = list.map(cardFor).join('');
+  const has = list.length > 0;
+  grid.hidden = !has;
+  empty.hidden = has;
+  bar.hidden = !has;
+  headline.textContent = has
+    ? list.length + (list.length === 1 ? ' property saved' : ' properties saved')
+    : 'Saved properties';
+
+  if (has) {
+    const average = Math.round(list.reduce((sum, p) => sum + p.rent, 0) / list.length);
+    summary.textContent = 'Average rent ' + money(average) + ' per month';
+  }
+}
+
+grid.addEventListener('click', function (event) {
+  const button = event.target.closest('.fav');
+  if (!button) return;
+  const list = favs().filter(id => id !== button.dataset.id);
+  saveFavs(list);
+  render();
+});
+
+sort.addEventListener('change', render);
+
+document.getElementById('clearAll').addEventListener('click', function () {
+  if (confirm('Remove every saved property?')) { saveFavs([]); render(); }
+});
+
+render();
+</script>
+</body>
+</html>
