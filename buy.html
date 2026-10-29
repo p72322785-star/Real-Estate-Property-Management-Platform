@@ -4,69 +4,581 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Property | Real Estate</title>
+
+    <title>Buy Property | EstateHub</title>
+    <meta name="description"
+          content="Explore properties for sale and find your dream home with EstateHub.">
+
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 8%;
+            background: #ffffff;
+            box-shadow: 0 2px 12px #0000000d;
+        }
+
+        .navbar h1 {
+            color: #0f766e;
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #475569;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #0f766e;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 65px 20px 40px;
+            background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+        }
+
+        .page-header .eyebrow {
+            color: #0f766e;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+        }
+
+        .page-header h2 {
+            font-size: clamp(30px, 4vw, 44px);
+            margin: 12px 0;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .search-panel {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 24px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px #0f172a0d;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 14px;
+            align-items: end;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #475569;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #0f766e;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            background: #0f766e;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background: #115e59;
+            transform: translateY(-1px);
+        }
+
+        .properties-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 24px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .section-heading p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .property-card {
+            overflow: hidden;
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 5px 20px #0f172a08;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px #0f172a12;
+        }
+
+        .property-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+            background: #e2e8f0;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ffffff;
+            color: #0f766e;
+            padding: 7px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .property-info {
+            padding: 20px;
+        }
+
+        .property-info h3 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .location {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 14px 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .price {
+            color: #0f766e;
+            font-size: 23px;
+            margin: 18px 0;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .property-actions .btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        .details-btn {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .details-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 45px 10px;
+            color: #64748b;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 25px;
+            text-align: center;
+            background: #0f172a;
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 900px) {
+            .property-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .search-panel {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                margin: 0 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 18px 5%;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .nav-links {
+                gap: 18px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header {
+                padding-top: 40px;
+            }
+
+            .search-panel,
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .property-image {
+                height: 230px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
 <header>
     <nav class="navbar">
-        <h1>EstateHub</h1>
+        <a href="properties.html" aria-label="EstateHub home">
+            <h1>EstateHub</h1>
+        </a>
 
         <div class="nav-links">
             <a href="properties.html">Properties</a>
-            <a href="buy.html">Buy</a>
+            <a href="buy.html" class="active">Buy</a>
             <a href="rent.html">Rent</a>
         </div>
     </nav>
 </header>
 
 <main>
-
     <section class="page-header">
+        <span class="eyebrow">Find your perfect home</span>
         <h2>Properties for Sale</h2>
-        <p>Find a property that fits your lifestyle and budget.</p>
+        <p>Discover beautiful properties that fit your lifestyle and budget.</p>
+
+        <form class="search-panel" id="searchForm">
+            <div class="field">
+                <label for="location">Location</label>
+                <input
+                    type="search"
+                    id="location"
+                    placeholder="Search city or location"
+                >
+            </div>
+
+            <div class="field">
+                <label for="bedrooms">Bedrooms</label>
+                <select id="bedrooms">
+                    <option value="">Any</option>
+                    <option value="1">1 BHK</option>
+                    <option value="2">2 BHK</option>
+                    <option value="3">3 BHK</option>
+                    <option value="4">4+ BHK</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="budget">Maximum Budget</label>
+                <select id="budget">
+                    <option value="">Any budget</option>
+                    <option value="3000000">₹30 Lakh</option>
+                    <option value="5000000">₹50 Lakh</option>
+                    <option value="7500000">₹75 Lakh</option>
+                    <option value="10000000">₹1 Crore</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Search</button>
+        </form>
     </section>
 
-    <section class="property-grid">
-
-        <div class="property-card">
-            <div class="property-image">Property Image</div>
-
-            <div class="property-info">
-                <span class="badge">For Sale</span>
-                <h3>Modern Family Villa</h3>
-                <p>Mathura, Uttar Pradesh</p>
-                <p>3 BHK • 2 Bath • 1800 sq.ft</p>
-
-                <h4>₹65,00,000</h4>
-
-                <button class="btn">Contact Seller</button>
+    <section class="properties-section">
+        <div class="section-heading">
+            <div>
+                <h2>Featured Properties</h2>
+                <p id="resultCount">Explore our available homes.</p>
             </div>
         </div>
 
-        <div class="property-card">
-            <div class="property-image">Property Image</div>
+        <div class="property-grid" id="propertyGrid">
 
-            <div class="property-info">
-                <span class="badge">For Sale</span>
-                <h3>Luxury Apartment</h3>
-                <p>Delhi, India</p>
-                <p>2 BHK • 2 Bath • 1200 sq.ft</p>
+            <article
+                class="property-card"
+                data-location="mathura uttar pradesh"
+                data-bedrooms="3"
+                data-price="6500000"
+            >
+                <div class="property-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80"
+                        alt="Modern family villa with landscaped exterior"
+                        loading="lazy"
+                    >
+                    <span class="badge">For Sale</span>
+                </div>
 
-                <h4>₹42,00,000</h4>
+                <div class="property-info">
+                    <h3>Modern Family Villa</h3>
+                    <p class="location">📍 Mathura, Uttar Pradesh</p>
 
-                <button class="btn">Contact Seller</button>
-            </div>
+                    <div class="features">
+                        <span>🛏 3 BHK</span>
+                        <span>🛁 2 Bath</span>
+                        <span>📐 1,800 sq.ft</span>
+                    </div>
+
+                    <h4 class="price">₹65,00,000</h4>
+
+                    <div class="property-actions">
+                        <a
+                            class="btn"
+                            href="mailto:sales@estatehub.example?subject=Modern%20Family%20Villa"
+                        >Contact Seller</a>
+                        <a class="btn details-btn" href="mailto:sales@estatehub.example?subject=Villa%20Details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article
+                class="property-card"
+                data-location="delhi india"
+                data-bedrooms="2"
+                data-price="4200000"
+            >
+                <div class="property-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80"
+                        alt="Contemporary apartment with stylish architecture"
+                        loading="lazy"
+                    >
+                    <span class="badge">For Sale</span>
+                </div>
+
+                <div class="property-info">
+                    <h3>Luxury Apartment</h3>
+                    <p class="location">📍 Delhi, India</p>
+
+                    <div class="features">
+                        <span>🛏 2 BHK</span>
+                        <span>🛁 2 Bath</span>
+                        <span>📐 1,200 sq.ft</span>
+                    </div>
+
+                    <h4 class="price">₹42,00,000</h4>
+
+                    <div class="property-actions">
+                        <a
+                            class="btn"
+                            href="mailto:sales@estatehub.example?subject=Luxury%20Apartment"
+                        >Contact Seller</a>
+                        <a class="btn details-btn" href="mailto:sales@estatehub.example?subject=Apartment%20Details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <article
+                class="property-card"
+                data-location="noida uttar pradesh"
+                data-bedrooms="3"
+                data-price="7200000"
+            >
+                <div class="property-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"
+                        alt="Spacious modern home with an elegant interior"
+                        loading="lazy"
+                    >
+                    <span class="badge">For Sale</span>
+                </div>
+
+                <div class="property-info">
+                    <h3>Premium Family Home</h3>
+                    <p class="location">📍 Noida, Uttar Pradesh</p>
+
+                    <div class="features">
+                        <span>🛏 3 BHK</span>
+                        <span>🛁 3 Bath</span>
+                        <span>📐 1,650 sq.ft</span>
+                    </div>
+
+                    <h4 class="price">₹72,00,000</h4>
+
+                    <div class="property-actions">
+                        <a
+                            class="btn"
+                            href="mailto:sales@estatehub.example?subject=Premium%20Family%20Home"
+                        >Contact Seller</a>
+                        <a class="btn details-btn" href="mailto:sales@estatehub.example?subject=Home%20Details">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </article>
+
         </div>
 
+        <div class="empty-state" id="emptyState">
+            <h3>No properties found</h3>
+            <p>Try changing your location, bedroom, or budget filters.</p>
+        </div>
     </section>
-
 </main>
 
 <footer>
-    <p>&copy; 2026 EstateHub. All rights reserved.</p>
+    <p>© 2026 EstateHub. All rights reserved.</p>
 </footer>
+
+<script>
+    const searchForm = document.getElementById("searchForm");
+    const locationInput = document.getElementById("location");
+    const bedroomSelect = document.getElementById("bedrooms");
+    const budgetSelect = document.getElementById("budget");
+
+    const propertyCards = document.querySelectorAll(".property-card");
+    const resultCount = document.getElementById("resultCount");
+    const emptyState = document.getElementById("emptyState");
+
+    searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const location = locationInput.value.trim().toLowerCase();
+        const bedrooms = bedroomSelect.value;
+        const maxBudget = budgetSelect.value
+            ? Number(budgetSelect.value)
+            : Infinity;
+
+        let visibleCount = 0;
+
+        propertyCards.forEach(function (card) {
+            const propertyLocation = card.dataset.location;
+            const propertyBedrooms = Number(card.dataset.bedrooms);
+            const propertyPrice = Number(card.dataset.price);
+
+            const matchesLocation =
+                !location || propertyLocation.includes(location);
+
+            const matchesBedrooms =
+                !bedrooms ||
+                (bedrooms === "4"
+                    ? propertyBedrooms >= 4
+                    : propertyBedrooms === Number(bedrooms));
+
+            const matchesBudget = propertyPrice <= maxBudget;
+
+            const isVisible =
+                matchesLocation && matchesBedrooms && matchesBudget;
+
+            card.hidden = !isVisible;
+
+            if (isVisible) {
+                visibleCount++;
+            }
+        });
+
+        resultCount.textContent =
+            visibleCount + (visibleCount === 1
+                ? " property found"
+                : " properties found");
+
+        emptyState.style.display =
+            visibleCount === 0 ? "block" : "none";
+    });
+</script>
 
 </body>
 </html>
