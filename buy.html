@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore thoughtfully selected homes for sale in Noida and Agra with EstateHub.">
+  <meta name="theme-color" content="#f1f3eb">
+  <title>Homes for sale | EstateHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="buy">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="topbar"><div class="shell nav">
+    <a class="brand" href="properties.html" aria-label="EstateHub home"><span class="brand-mark" aria-hidden="true">e</span><span>estatehub</span></a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">☰</button>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation"><a href="properties.html">Explore homes</a>
+      <a href="buy.html" class="active" aria-current="page">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a class="contact-link" href="mailto:hello@estatehub.example">Talk to an advisor <span aria-hidden="true">→</span></a></nav>
+  </div></header>
+  <main id="main">
+    <section class="hero"><div class="shell hero-grid">
+      <div><p class="eyebrow">Make your next move</p><h1>Find a home that feels <em>like yours.</em></h1><p class="hero-copy">From first keys to forever homes, explore places worth putting down roots in.</p>
+        <div class="hero-note"><div class="avatar-stack" aria-hidden="true"><span>AM</span><span>RK</span><span>SP</span></div><span><strong>A more personal search.</strong><br>Real people, thoughtful homes.</span></div>
+      </div>
+      <div class="hero-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=85" alt="Warm, modern home with a sunlit living room"><div class="photo-caption"><div><small>Find your next chapter</small><strong>Good living starts here</strong></div><span class="caption-icon" aria-hidden="true">→</span></div></div>
+    </div></section>
+    <div class="shell search-wrap"><form class="search-panel" id="searchForm" role="search">
+      <div class="field"><label for="location">Location or keyword</label><input id="location" type="search" placeholder="Try Noida, Agra?" autocomplete="off"></div>
+      <div class="field"><label for="kind">Property type</label><select id="kind"><option value="">Any property</option><option value="house">House</option><option value="villa">Villa</option><option value="apartment">Apartment</option></select></div>
+      <div class="field"><label for="beds">Bedrooms</label><select id="beds"><option value="0">Any number</option><option value="1">1+ bedrooms</option><option value="2">2+ bedrooms</option><option value="3">3+ bedrooms</option><option value="4">4+ bedrooms</option></select></div>
+      <div class="field"><label for="budget">Max price</label><select id="budget"><option value="0">Any budget</option><option value="8000000">Up to ₹80 lakh</option><option value="12000000">Up to ₹1.2 crore</option><option value="20000000">Up to ₹2 crore</option></select></div>
+      <button class="search-button" type="submit">Explore homes <span aria-hidden="true">→</span></button>
+    </form></div>
+    <section class="listings" id="listings"><div class="shell"><div class="section-top"><div><p class="section-kicker">The EstateHub collection</p><h2>Homes for sale</h2><p class="section-desc">A handpicked collection to make your next move feel right.</p></div><p class="result-count" id="resultCount" aria-live="polite"></p></div><div class="property-grid" id="propertyGrid" aria-live="polite"></div></div></section>
+    <section class="steps"><div class="shell steps-layout"><div class="steps-heading"><p class="section-kicker">A little more personal</p><h2>Good homes.<br>Good people.</h2><p>We believe finding a home should feel considered, not complicated. We're here for every step.</p></div><div class="step-list"><article class="step"><span class="step-number">01</span><h3>Tell us what matters</h3><p>Search your way, with the details that make a place feel right.</p></article><article class="step"><span class="step-number">02</span><h3>Find your shortlist</h3><p>Explore a curated collection of homes for your next chapter.</p></article><article class="step"><span class="step-number">03</span><h3>Make it yours</h3><p>Connect with our team and take the next step with confidence.</p></article></div></div></section>
+  </main>
+  <footer class="footer"><div class="shell footer-inner"><a class="brand" href="properties.html"><span class="brand-mark" aria-hidden="true">e</span><span>estatehub</span></a><span class="footer-note">A more considered way to find home.</span><nav class="footer-links" aria-label="Footer navigation"><a href="properties.html">Explore homes</a><a href="buy.html">Buy</a><a href="rent.html">Rent</a></nav></div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js" defer></script>
+</body>
+</html>
