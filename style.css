@@ -654,6 +654,14 @@ footer {
     color: white;
 }
 
+.nav-links a.login-btn {
+    color: white;
+}
+
+.nav-links a.login-btn:hover {
+    color: white;
+}
+
 /* Contact Page */
 
 .contact {

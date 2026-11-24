@@ -51,10 +51,35 @@ body {
 
 .login-btn {
     text-decoration: none;
-    background: #173f35;
+    background: #2874a6;
     color: white;
     padding: 12px 25px;
     border-radius: 5px;
+}
+
+.nav-links a.login-btn {
+    color: white;
+}
+
+.nav-links a.login-btn:hover {
+    color: white;
+}
+
+.my-properties-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: #b18b4a;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.my-properties-btn:hover {
+    background: #9c7537;
+    color: white;
 }
 
 /* ============ PAGE HEADER (breadcrumb banner for inner pages) ============ */
@@ -417,6 +442,16 @@ legend {
     margin-bottom: 6px;
 }
 
+.upload-box {
+    cursor: pointer;
+}
+
+.upload-box input {
+    display: block;
+    margin: 14px auto 0;
+    font-size: 13px;
+}
+
 .checkbox-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -565,6 +600,18 @@ table.dash-table {
     border-radius: 6px;
 }
 
+.prop-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    background: #173f35;
+    color: #d2b477;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
 .prop-cell .prop-name {
     color: #173f35;
     font-weight: bold;
@@ -591,8 +638,71 @@ table.dash-table {
     color: #b18b4a;
 }
 
-.row-actions a.delete {
+.row-actions button.delete {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.row-actions a.delete,
+.row-actions button.delete {
     color: #c0392b;
+}
+
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 1000;
+    max-width: 360px;
+    background: #173f35;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: 0.25s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.confirm-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    max-width: 420px;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.confirm-dialog::backdrop {
+    background: rgba(23, 63, 53, 0.55);
+}
+
+.dialog-content {
+    padding: 28px;
+}
+
+.dialog-content h3 {
+    color: #173f35;
+    margin-bottom: 8px;
+}
+
+.dialog-content p {
+    color: #666666;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 /* ============ FOOTER (shared with Priya's pages) ============ */
@@ -690,6 +800,7 @@ footer h3 {
 
     .navbar {
         height: auto;
+        min-height: 80px;
         padding: 20px;
         flex-direction: column;
         gap: 20px;

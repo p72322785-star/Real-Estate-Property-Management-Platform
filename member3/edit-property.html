@@ -11,16 +11,15 @@
     <header>
         <nav class="navbar">
             <div class="logo">EstateHub</div>
-
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="../index.html">Home</a></li>
                 <li><a href="../member2/properties.html">Properties</a></li>
-                <li><a href="my-properties.html" class="active">My Properties</a></li>
                 <li><a href="add-property.html">Add Property</a></li>
-                <li><a href="../member1/contact.html">Contact</a></li>
+                <li><a href="../index.html#categories">Categories</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><a href="../member4/login.html" class="login-btn">Login</a></li>
             </ul>
-
-            <a href="#" class="login-btn">Login</a>
         </nav>
     </header>
 
@@ -29,7 +28,7 @@
         <div class="page-header">
             <h1>Edit Property</h1>
             <p class="breadcrumb">
-                <a href="../member1/index.html">Home</a>
+                <a href="../index.html">Home</a>
                 <span>/</span>
                 <a href="my-properties.html">My Properties</a>
                 <span>/</span>
@@ -43,7 +42,7 @@
                 <h2>Modern Family House</h2>
                 <p class="form-sub">Update the details below and save your changes.</p>
 
-                <form>
+                <form id="propertyForm">
 
                     <fieldset>
                         <legend>Basic Information</legend>
@@ -51,12 +50,12 @@
 
                             <div class="form-field full">
                                 <label for="title">Property Title</label>
-                                <input type="text" id="title" name="title" value="Modern Family House">
+                                <input type="text" id="title" name="title" value="Modern Family House" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="type">Property Type</label>
-                                <select id="type" name="type">
+                                <select id="type" name="type" required>
                                     <option>Residential</option>
                                     <option>Commercial</option>
                                     <option>Villa</option>
@@ -66,7 +65,7 @@
 
                             <div class="form-field">
                                 <label for="purpose">Purpose</label>
-                                <select id="purpose" name="purpose">
+                                <select id="purpose" name="purpose" required>
                                     <option selected>For Sale</option>
                                     <option>For Rent</option>
                                 </select>
@@ -74,7 +73,7 @@
 
                             <div class="form-field">
                                 <label for="price">Price (Γé╣)</label>
-                                <input type="number" id="price" name="price" value="7500000">
+                                <input type="number" id="price" name="price" value="7500000" min="1" required>
                             </div>
 
                             <div class="form-field">
@@ -95,17 +94,17 @@
 
                             <div class="form-field full">
                                 <label for="address">Address</label>
-                                <input type="text" id="address" name="address" value="Krishna Nagar Colony">
+                                <input type="text" id="address" name="address" value="Krishna Nagar Colony" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="city">City</label>
-                                <input type="text" id="city" name="city" value="Mathura">
+                                <input type="text" id="city" name="city" value="Mathura" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="state">State</label>
-                                <input type="text" id="state" name="state" value="Uttar Pradesh">
+                                <input type="text" id="state" name="state" value="Uttar Pradesh" required>
                             </div>
 
                         </div>
@@ -165,15 +164,16 @@
                     <fieldset>
                         <legend>Photos</legend>
                         <div class="form-grid">
-                            <div class="upload-box">
-                                <strong>Click to upload or drag new photos here</strong>
+                            <label class="upload-box" for="photos">
+                                <strong>Click to upload new photos</strong>
                                 Existing photos will be kept unless replaced
-                            </div>
+                                <input type="file" id="photos" name="photos" accept="image/png,image/jpeg" multiple>
+                            </label>
                         </div>
                     </fieldset>
 
                     <div class="form-actions">
-                        <a href="my-properties.html" class="btn btn-danger">Delete Listing</a>
+                        <button type="button" class="btn btn-danger" data-delete-property>Delete Listing</button>
                         <a href="my-properties.html" class="btn btn-outline">Cancel</a>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
@@ -199,10 +199,10 @@
 
             <div class="footer-links">
                 <h3>Quick Links</h3>
-                <a href="../member1/index.html">Home</a>
+                <a href="../index.html">Home</a>
                 <a href="../member2/properties.html">Properties</a>
                 <a href="my-properties.html">My Properties</a>
-                <a href="../member1/about.html">About</a>
+                <a href="../about.html">About</a>
             </div>
 
             <div class="footer-contact">
@@ -220,5 +220,6 @@
 
     </footer>
 
+    <script src="member3.js"></script>
 </body>
 </html>

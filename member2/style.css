@@ -14,31 +14,46 @@ body {
 /* Navbar */
 
 .navbar {
-    background: #14213d;
-    color: white;
-    padding: 18px 8%;
+    min-height: 80px;
+    padding: 0 7%;
+    background: white;
+    border-bottom: 1px solid #eeeeee;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.navbar h1 {
-    font-size: 25px;
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #173f35;
 }
 
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 35px;
+    list-style: none;
 }
 
 .nav-links a {
-    color: white;
+    color: #333333;
     text-decoration: none;
-    font-weight: 500;
+    font-size: 15px;
 }
 
 .nav-links a:hover {
-    color: #fca311;
+    color: #b18b4a;
+}
+
+.login-btn {
+    background: #2874a6;
+    color: white !important;
+    padding: 12px 25px;
+    border-radius: 5px;
+}
+
+.login-btn:hover {
+    background: #1e3a5f;
 }
 
 /* Hero */
@@ -191,6 +206,8 @@ footer {
 
     .nav-links {
         gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     .hero h2 {
