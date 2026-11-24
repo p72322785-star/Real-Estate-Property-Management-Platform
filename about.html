@@ -11,14 +11,20 @@
 
     <header>
         <nav class="navbar">
-            <h2>EstateHub</h2>
-            <div>
-                <a href="index.html">Home</a>
-                <a href="../member2/properties.html">Properties</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
-                <a href="../member4/login.html">Login</a>
-            </div>
+            <h2>EstateHub</h2><button class="menu-toggle" id="menuToggle"
+    aria-label="Toggle navigation" aria-expanded="false">
+    ☰
+</button>
+
+<div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="../member2/properties.html">Properties</a>
+    <a href="index.html#categories">Categories</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="../member4/login.html" class="login-btn">Login</a>
+</div>
+            
         </nav>
     </header>
 
@@ -44,11 +50,29 @@
             <li>Simple and user-friendly website</li>
             <li>Helpful information for buyers and renters</li>
         </ul>
+        <h2>Our Values</h2>
+
+<div class="values-container">
+    <div class="value-card">
+        <h3>Trust</h3>
+        <p>We believe in providing clear and reliable property information.</p>
+    </div>
+
+    <div class="value-card">
+        <h3>Transparency</h3>
+        <p>We aim to make property decisions simple and transparent.</p>
+    </div>
+
+    <div class="value-card">
+        <h3>Convenience</h3>
+        <p>We make it easier to explore properties in one place.</p>
+    </div>
+</div>
     </section>
 
     <footer>
         <p>&copy; 2026 EstateHub. All rights reserved.</p>
     </footer>
-
+<script src="js/main.js"></script>
 </body>
 </html>
