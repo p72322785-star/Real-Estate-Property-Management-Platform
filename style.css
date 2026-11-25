@@ -1029,10 +1029,11 @@ footer {
     font-weight: 600;
     transition: background 0.3s ease, transform 0.3s ease;
 }
-
 .contact-agent-btn:hover {
     background: #b18b4a;
     transform: translateY(-2px);
+}
+
 :root {
   /* Ink-on-survey-paper palette: deep navy drafting ink, cool paper,
      verdigris for actions, brass reserved for saved/starred items only. */

@@ -1,12 +1,14 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EstateHub - Real Estate Property Management</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Header and Navigation -->
@@ -15,22 +17,13 @@
 
             <div class="logo">EstateHub</div>
 
-<<<<<<< HEAD
             <button class="menu-toggle" id="menuToggle"
-                aria-label="Toggle navigation" aria-expanded="false">
+                aria-label="Toggle navigation"
+                aria-expanded="false">
                 ☰
             </button>
 
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="member2/properties.html">Properties</a>
-                <a href="#categories">Categories</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
-                <a href="member4/login.html" class="login-btn">Login</a>
-            </div>
-
-=======
+            <!-- Raj's Navbar -->
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="member2/properties.html">Properties</a></li>
@@ -40,14 +33,16 @@
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="member4/login.html" class="login-btn">Login</a></li>
             </ul>
->>>>>>> origin/raj
+
         </nav>
     </header>
+
 
     <main>
 
         <!-- Hero Section -->
         <section class="hero">
+
             <div class="hero-content">
 
                 <p class="small-heading">WELCOME TO ESTATEHUB</p>
@@ -66,12 +61,8 @@
 
                     <div class="search-item">
                         <label for="location">Location</label>
-                        <input
-                            type="text"
-                            id="location"
-                            name="location"
-                            placeholder="Enter location"
-                            required>
+                        <input type="text" id="location" name="location"
+                            placeholder="Enter location" required>
                     </div>
 
                     <div class="search-item">
@@ -100,7 +91,9 @@
                 </form>
 
             </div>
+
         </section>
+
 
         <!-- Property Categories -->
         <section class="categories" id="categories">
@@ -116,172 +109,227 @@
                 <div class="category-card"
                     data-filter="residential"
                     role="button" tabindex="0" aria-pressed="false">
+
                     <div class="category-icon">🏠</div>
                     <h3>Residential</h3>
                     <p>Comfortable homes for modern living.</p>
+
                 </div>
 
                 <div class="category-card"
                     data-filter="commercial"
                     role="button" tabindex="0" aria-pressed="false">
+
                     <div class="category-icon">🏢</div>
                     <h3>Commercial</h3>
                     <p>Spaces designed for your business.</p>
+
                 </div>
 
                 <div class="category-card"
                     data-filter="villas"
                     role="button" tabindex="0" aria-pressed="false">
+
                     <div class="category-icon">🏡</div>
                     <h3>Villas</h3>
                     <p>Premium villas for luxurious living.</p>
+
                 </div>
 
                 <div class="category-card"
                     data-filter="apartments"
                     role="button" tabindex="0" aria-pressed="false">
+
                     <div class="category-icon">🏘️</div>
                     <h3>Apartments</h3>
                     <p>Modern apartments in great locations.</p>
+
                 </div>
 
             </div>
+
         </section>
 
-        
-<!-- Featured Properties -->
-<section class="properties" id="properties">
 
-    <div class="section-heading property-heading">
-        <div>
-            <p>OUR COLLECTION</p>
-            <h2>Featured Properties</h2>
-        </div>
+        <!-- Featured Properties -->
+        <section class="properties" id="properties">
 
-        <a href="member2/properties.html" class="view-all">
-            View All Properties →
-        </a>
-    </div>
+            <div class="section-heading property-heading">
 
-    <div class="property-container">
-
-        <!-- Property 1 -->
-        <div class="property-card" data-category="residential">
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUREP2oSdt0epz1SjDQpW8rwpt3RzTsGcefXouycKpFQ&s=10"
-                alt="Modern House">
-
-            <div class="property-info">
-                <span class="property-type">FOR SALE</span>
-                <h3>Modern Family House</h3>
-                <p class="location">📍 Mathura, Uttar Pradesh</p>
-
-                <div class="property-details">
-                    <span>🛏 3 Beds</span>
-                    <span>🛁 2 Baths</span>
-                    <span>📐 1800 sqft</span>
+                <div>
+                    <p>OUR COLLECTION</p>
+                    <h2>Featured Properties</h2>
                 </div>
 
-                <div class="property-bottom">
-                    <strong>₹75 Lakhs</strong>
-                    <a href="#" class="view-property-btn"
-                      data-title="Modern Family House" data-location="Mathura, Uttar Pradesh"data-price="₹75 Lakhs"data-details="3 Beds | 2 Baths | 1800 sqft">
-                       View Property
-                          </a>
-                </div>
+                <a href="member2/properties.html" class="view-all">
+                    View All Properties →
+                </a>
+
             </div>
-        </div>
 
-        <!-- Property 2 -->
-        <div class="property-card" data-category="apartments">
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ4-thYLL6f0Du3uF6aBG57CShJXUa_93neg7_kWzA0g&s=10"
-                alt="Luxury Apartment">
 
-            <div class="property-info">
-                <span class="property-type">FOR RENT</span>
-                <h3>Luxury City Apartment</h3>
-                <p class="location">📍 Delhi, India</p>
+            <div class="property-container">
 
-                <div class="property-details">
-                    <span>🛏 2 Beds</span>
-                    <span>🛁 2 Baths</span>
-                    <span>📐 1200 sqft</span>
+                <!-- Property 1 -->
+                <div class="property-card" data-category="residential">
+
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUREP2oSdt0epz1SjDQpW8rwpt3RzTsGcefXouycKpFQ&s=10"
+                        alt="Modern House">
+
+                    <div class="property-info">
+
+                        <span class="property-type">FOR SALE</span>
+                        <h3>Modern Family House</h3>
+
+                        <p class="location">📍 Mathura, Uttar Pradesh</p>
+
+                        <div class="property-details">
+                            <span>🛏 3 Beds</span>
+                            <span>🛁 2 Baths</span>
+                            <span>📐 1800 sqft</span>
+                        </div>
+
+                        <div class="property-bottom">
+                            <strong>₹75 Lakhs</strong>
+
+                            <a href="#" class="view-property-btn"
+                                data-title="Modern Family House"
+                                data-location="Mathura, Uttar Pradesh"
+                                data-price="₹75 Lakhs"
+                                data-details="3 Beds | 2 Baths | 1800 sqft">
+                                View Property
+                            </a>
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <div class="property-bottom">
-                    <strong>₹35,000/month</strong>
-                    <a href="#" class="view-property-btn"data-title="Luxury City Apartment"data-location="Delhi, India"data-price="₹35,000/month"data-details="2 Beds | 2 Baths | 1200 sqft">
-                      View Property
-                           </a>
-                    
+
+                <!-- Property 2 -->
+                <div class="property-card" data-category="apartments">
+
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJ4-thYLL6f0Du3uF6aBG57CShJXUa_93neg7_kWzA0g&s=10"
+                        alt="Luxury Apartment">
+
+                    <div class="property-info">
+
+                        <span class="property-type">FOR RENT</span>
+                        <h3>Luxury City Apartment</h3>
+
+                        <p class="location">📍 Delhi, India</p>
+
+                        <div class="property-details">
+                            <span>🛏 2 Beds</span>
+                            <span>🛁 2 Baths</span>
+                            <span>📐 1200 sqft</span>
+                        </div>
+
+                        <div class="property-bottom">
+                            <strong>₹35,000/month</strong>
+
+                            <a href="#" class="view-property-btn"
+                                data-title="Luxury City Apartment"
+                                data-location="Delhi, India"
+                                data-price="₹35,000/month"
+                                data-details="2 Beds | 2 Baths | 1200 sqft">
+                                View Property
+                            </a>
+                        </div>
+
+                    </div>
+
                 </div>
+
+
+                <!-- Property 3 -->
+                <div class="property-card" data-category="villas">
+
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF39L3ObLE-bU88vd-44M__hF73GLL8qfsJeCnAKrVAg&s=10"
+                        alt="Luxury Villa">
+
+                    <div class="property-info">
+
+                        <span class="property-type">FOR SALE</span>
+                        <h3>Premium Luxury Villa</h3>
+
+                        <p class="location">📍 Noida, Uttar Pradesh</p>
+
+                        <div class="property-details">
+                            <span>🛏 4 Beds</span>
+                            <span>🛁 3 Baths</span>
+                            <span>📐 2800 sqft</span>
+                        </div>
+
+                        <div class="property-bottom">
+                            <strong>₹1.25 Crore</strong>
+
+                            <a href="#" class="view-property-btn"
+                                data-title="Premium Luxury Villa"
+                                data-location="Noida, Uttar Pradesh"
+                                data-price="₹1.25 Crore"
+                                data-details="4 Beds | 3 Baths | 2800 sqft">
+                                View Property
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-        </div>
 
-        <!-- Property 3 -->
-        <div class="property-card" data-category="villas">
-            <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF39L3ObLE-bU88vd-44M__hF73GLL8qfsJeCnAKrVAg&s=10"
-                alt="Luxury Villa">
 
-            <div class="property-info">
-                <span class="property-type">FOR SALE</span>
-                <h3>Premium Luxury Villa</h3>
-                <p class="location">📍 Noida, Uttar Pradesh</p>
+            <!-- Category Filter Message -->
+            <p id="propertyFilterMessage" aria-live="polite"></p>
 
-                <div class="property-details">
-                    <span>🛏 4 Beds</span>
-                    <span>🛁 3 Baths</span>
-                    <span>📐 2800 sqft</span>
-                </div>
+            <!-- Reset Filter Button -->
+            <button id="showAllProperties"
+                class="show-all-btn" type="button">
+                Show All Properties
+            </button>
 
-                <div class="property-bottom">
-                    <strong>₹1.25 Crore</strong>
-                    <a href="#" class="view-property-btn"data-title="Premium Luxury Villa"data-location="Noida, Uttar Pradesh"data-price="₹1.25 Crore"data-details="4 Beds | 3 Baths | 2800 sqft">
-                       View Property
-                               </a>
-                </div>
+        </section>
+
+
+        <!-- Property Details Modal -->
+        <div id="propertyModal" class="property-modal">
+
+            <div class="modal-content">
+
+                <button id="closeModal"
+                    class="close-modal" aria-label="Close">
+                    &times;
+                </button>
+
+                <p class="small-heading">PROPERTY DETAILS</p>
+
+                <h2 id="modalTitle"></h2>
+                <p id="modalLocation"></p>
+                <h3 id="modalPrice"></h3>
+                <p id="modalDetails"></p>
+
+                <a href="contact.html" class="contact-agent-btn">
+                    Contact Agent
+                </a>
+
             </div>
+
         </div>
-
-    </div>
-
-    <!-- Category Filter Message -->
-    <p id="propertyFilterMessage" aria-live="polite"></p>
-
-    <!-- Reset Filter Button -->
-    <button id="showAllProperties" class="show-all-btn" type="button">
-        Show All Properties
-    </button>
-
-</section>
-<!-- Property Details Modal -->
-<div id="propertyModal" class="property-modal">
-    <div class="modal-content">
-        <button id="closeModal" class="close-modal" aria-label="Close">
-            &times;
-        </button>
-
-        <p class="small-heading">PROPERTY DETAILS</p>
-        <h2 id="modalTitle"></h2>
-        <p id="modalLocation"></p>
-        <h3 id="modalPrice"></h3>
-        <p id="modalDetails"></p>
-        <a href="contact.html" class="contact-agent-btn">
-    Contact Agent
-</a>
-    </div>
-</div>
 
 
         <!-- About Section -->
         <section class="about" id="about">
 
             <div class="about-image">
+
                 <img
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMb3ix53FexE9WZZcBbQpDfPCEWvX7_zI4J_GpBWVofg&s=10"
                     alt="Beautiful Property">
+
             </div>
 
             <div class="about-content">
@@ -325,11 +373,13 @@
                     </div>
 
                 </div>
+
             </div>
 
         </section>
 
     </main>
+
 
     <!-- Footer -->
     <footer id="contact">
@@ -367,6 +417,7 @@
         </div>
 
     </footer>
+
 
     <!-- JavaScript Files -->
     <script src="js/main.js"></script>
