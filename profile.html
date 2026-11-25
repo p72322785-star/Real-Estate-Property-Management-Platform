@@ -806,7 +806,7 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
           <div class="card">
             <div class="panel-body">
               <h3>Current lease</h3>
-              <ul class="facts">
+              <ul class="facts" id="leaseFacts">
                 <li><span class="k">Property</span><span class="v">Flat 402, Shanti Residency</span></li>
                 <li><span class="k">Lease period</span><span class="v">Apr 2026 – Mar 2027</span></li>
                 <li><span class="k">Monthly rent</span><span class="v">&#8377;18,500</span></li>
@@ -826,7 +826,7 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
               <ul class="facts">
                 <li><span class="k">Role</span><span class="v" id="roleValue">Tenant</span></li>
                 <li><span class="k">Saved properties</span><span class="v" id="favCount">0</span></li>
-                <li><span class="k">Open requests</span><span class="v">2</span></li>
+                <li><span class="k">Open requests</span><span class="v" id="openCount">2</span></li>
               </ul>
               <p class="small muted" style="margin:14px 0 0">
                 Need a different role? Your administrator can change it from the user permissions panel.
@@ -840,106 +840,10 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
   </div>
 </div>
 
-<script>
-const SESSION = 'estate_session';
-const USERS = 'estate_users';
-const FAVS = 'estate_favs';
-
-const fields = ['name', 'phone', 'email', 'city', 'address'];
-const roleNames = { tenant: 'Tenant', owner: 'Property owner', admin: 'Administrator' };
-
-function initials(name) {
-  return name.split(' ').filter(Boolean).map(p => p[0]).join('').slice(0, 2).toUpperCase();
-}
-
-function currentUser() {
-  const session = JSON.parse(localStorage.getItem(SESSION) || 'null');
-  if (!session) return null;
-  const users = JSON.parse(localStorage.getItem(USERS) || '[]');
-  return users.find(u => u.email === session.email) || session;
-}
-
-let user = currentUser() || { name: 'Rishabh Singh', email: 'tenant@estate.in', phone: '9876543210', role: 'tenant', city: 'Mathura', address: '' };
-
-function fill() {
-  document.getElementById('name').value = user.name || '';
-  document.getElementById('phone').value = user.phone || '';
-  document.getElementById('email').value = user.email || '';
-  document.getElementById('city').value = user.city || '';
-  document.getElementById('address').value = user.address || '';
-
-  const role = roleNames[user.role] || 'Tenant';
-  document.getElementById('displayName').textContent = user.name;
-  document.getElementById('displayMeta').textContent = role + ' · Member since March 2026';
-  document.getElementById('railName').textContent = user.name;
-  document.getElementById('railRole').textContent = role;
-  document.getElementById('roleValue').textContent = role;
-  document.getElementById('bigAvatar').textContent = initials(user.name);
-  document.getElementById('railAvatar').textContent = initials(user.name);
-  document.getElementById('favCount').textContent =
-    JSON.parse(localStorage.getItem(FAVS) || '[]').length;
-}
-fill();
-
-const form = document.getElementById('profileForm');
-const notice = document.getElementById('saveNotice');
-
-form.addEventListener('submit', function (event) {
-  event.preventDefault();
-  const values = {};
-  fields.forEach(id => values[id] = document.getElementById(id).value.trim());
-
-  const checks = {
-    'f-name': values.name.length >= 3,
-    'f-phone': /^[6-9]\d{9}$/.test(values.phone.replace(/\D/g, '')),
-    'f-email': /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email)
-  };
-
-  let valid = true;
-  Object.keys(checks).forEach(function (id) {
-    document.getElementById(id).classList.toggle('field-error', !checks[id]);
-    if (!checks[id]) valid = false;
-  });
-  if (!valid) { document.querySelector('.field-error input').focus(); return; }
-
-  const users = JSON.parse(localStorage.getItem(USERS) || '[]');
-  const index = users.findIndex(u => u.email === user.email);
-  const updated = Object.assign({}, user, values, {
-    email: values.email.toLowerCase(),
-    notify: {
-      rent: document.getElementById('notifyRent').checked,
-      repairs: document.getElementById('notifyRepairs').checked,
-      listings: document.getElementById('notifyListings').checked
-    }
-  });
-
-  if (index > -1) { users[index] = updated; } else { users.push(updated); }
-  localStorage.setItem(USERS, JSON.stringify(users));
-  localStorage.setItem(SESSION, JSON.stringify({
-    name: updated.name, email: updated.email, role: updated.role, at: Date.now()
-  }));
-
-  user = updated;
-  fill();
-  notice.textContent = 'Changes saved.';
-  notice.classList.add('notice-ok', 'is-visible');
-  setTimeout(() => notice.classList.remove('is-visible'), 3200);
-});
-
-document.getElementById('reset').addEventListener('click', function () {
-  fill();
-  notice.classList.remove('is-visible');
-  document.querySelectorAll('.field-error').forEach(f => f.classList.remove('field-error'));
-});
-
-document.getElementById('viewAgreement').addEventListener('click', function () {
-  alert('Rental agreement downloads arrive with document storage in the next release.');
-});
-
-document.getElementById('signout').addEventListener('click', function () {
-  localStorage.removeItem(SESSION);
-  window.location.href = 'login.html';
-});
-</script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/profile.js"></script>
 </body>
 </html>

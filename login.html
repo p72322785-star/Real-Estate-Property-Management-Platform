@@ -756,76 +756,18 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
 
 </div>
 
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/login.js"></script>
 <script>
-/* ------------------------------------------------------------------
-   Front-end only auth. Accounts live in localStorage so the flow can be
-   demonstrated without a server; swap these calls for API requests when
-   the backend lands.
------------------------------------------------------------------- */
-const USERS = 'estate_users';
-const SESSION = 'estate_session';
-
-function seedDemoAccount() {
-  const users = JSON.parse(localStorage.getItem(USERS) || '[]');
-  if (!users.some(u => u.email === 'tenant@estate.in')) {
-    users.push({
-      name: 'Rishabh Singh',
-      email: 'tenant@estate.in',
-      phone: '98765 43210',
-      password: 'estate123',
-      role: 'tenant',
-      city: 'Mathura'
-    });
-    localStorage.setItem(USERS, JSON.stringify(users));
-  }
-}
-seedDemoAccount();
-
-const form = document.getElementById('signin');
-const notice = document.getElementById('formNotice');
-
-function setError(fieldId, on) {
-  document.getElementById(fieldId).classList.toggle('field-error', on);
-}
-
-function showNotice(message, ok) {
-  notice.textContent = message;
-  notice.classList.toggle('notice-ok', !!ok);
-  notice.classList.add('is-visible');
-}
-
-form.addEventListener('submit', function (event) {
-  event.preventDefault();
-  notice.classList.remove('is-visible');
-
-  const email = document.getElementById('email').value.trim().toLowerCase();
-  const password = document.getElementById('password').value;
-
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-  const passOk = password.length > 0;
-  setError('f-email', !emailOk);
-  setError('f-password', !passOk);
-  if (!emailOk || !passOk) return;
-
-  const users = JSON.parse(localStorage.getItem(USERS) || '[]');
-  const match = users.find(u => u.email === email && u.password === password);
-
-  if (!match) {
-    showNotice('That email and password don\u2019t match an account. Check both and try again.');
-    return;
-  }
-
-  const session = { name: match.name, email: match.email, role: match.role, at: Date.now() };
-  localStorage.setItem(SESSION, JSON.stringify(session));
-  if (!document.getElementById('remember').checked) {
-    sessionStorage.setItem('estate_temp', '1');
-  }
-  window.location.href = 'dashboard.html';
-});
-
-document.getElementById('forgot').addEventListener('click', function (event) {
-  event.preventDefault();
-  showNotice('Password resets arrive with the backend release. Use the demo login for now.', true);
+/* If the js/ folder is missing, say so instead of silently reloading the page. */
+document.getElementById('signin').addEventListener('submit', function (e) {
+  if (window.Estate && window.Estate.pageReady) return;
+  e.preventDefault();
+  var n = document.getElementById('formNotice');
+  n.textContent = 'The page scripts did not load. Keep the js folder next to login.html (js/data.js, store.js, ui.js, login.js).';
+  n.classList.add('is-visible');
 });
 </script>
 </body>

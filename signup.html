@@ -786,81 +786,18 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
 
 </div>
 
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/signup.js"></script>
 <script>
-const USERS = 'estate_users';
-const SESSION = 'estate_session';
-
-const form = document.getElementById('signup');
-const notice = document.getElementById('formNotice');
-const password = document.getElementById('password');
-const meter = document.getElementById('meter');
-const strength = document.getElementById('strength');
-
-function setError(id, on) {
-  document.getElementById(id).classList.toggle('field-error', on);
-}
-
-/* Live password strength — three bands, described in words as well as colour. */
-password.addEventListener('input', function () {
-  const value = password.value;
-  let level = 0;
-  if (value.length >= 8) level++;
-  if (/\d/.test(value) && /[a-zA-Z]/.test(value)) level++;
-  if (value.length >= 12 || /[^\w\s]/.test(value)) level++;
-  if (value.length === 0) level = 0;
-
-  meter.dataset.level = level;
-  strength.textContent = ['At least 8 characters, with a number.',
-                          'Weak — add a few more characters.',
-                          'Fine. A symbol would make it stronger.',
-                          'Strong password.'][level];
-});
-
-form.addEventListener('submit', function (event) {
-  event.preventDefault();
-  notice.classList.remove('is-visible');
-
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim().toLowerCase();
-  const phone = document.getElementById('phone').value.replace(/\D/g, '');
-  const pass = password.value;
-  const confirm = document.getElementById('confirm').value;
-  const terms = document.getElementById('terms').checked;
-  const role = document.querySelector('input[name="role"]:checked').value;
-
-  const checks = {
-    'f-name': name.length >= 3,
-    'f-email': /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email),
-    'f-phone': /^[6-9]\d{9}$/.test(phone),
-    'f-password': pass.length >= 8 && /\d/.test(pass),
-    'f-confirm': confirm === pass && confirm.length > 0,
-    'f-terms': terms
-  };
-
-  let valid = true;
-  Object.keys(checks).forEach(function (id) {
-    setError(id, !checks[id]);
-    if (!checks[id]) valid = false;
-  });
-
-  if (!valid) {
-    const firstBad = document.querySelector('.field-error input');
-    if (firstBad) firstBad.focus();
-    return;
-  }
-
-  const users = JSON.parse(localStorage.getItem(USERS) || '[]');
-  if (users.some(u => u.email === email)) {
-    notice.textContent = 'An account already uses this email. Sign in instead.';
-    notice.classList.remove('notice-ok');
-    notice.classList.add('is-visible');
-    return;
-  }
-
-  users.push({ name, email, phone, password: pass, role, city: '' });
-  localStorage.setItem(USERS, JSON.stringify(users));
-  localStorage.setItem(SESSION, JSON.stringify({ name, email, role, at: Date.now() }));
-  window.location.href = 'dashboard.html';
+/* If the js/ folder is missing, say so instead of silently reloading the page. */
+document.getElementById('signup').addEventListener('submit', function (e) {
+  if (window.Estate && window.Estate.pageReady) return;
+  e.preventDefault();
+  var n = document.getElementById('formNotice');
+  n.textContent = 'The page scripts did not load. Keep the js folder next to signup.html (js/data.js, store.js, ui.js, signup.js).';
+  n.classList.add('is-visible');
 });
 </script>
 </body>

@@ -740,10 +740,10 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
       </header>
 
       <section class="stats" aria-label="Summary">
-        <div class="stat"><b>128</b><span>Units listed</span></div>
-        <div class="stat"><b>96</b><span>Currently let</span></div>
-        <div class="stat"><b>32</b><span>Available now</span></div>
-        <div class="stat stat--alert"><b>14</b><span>Open repairs</span></div>
+        <div class="stat"><b id="statTotal">128</b><span>Units listed</span></div>
+        <div class="stat"><b id="statLet">96</b><span>Currently let</span></div>
+        <div class="stat"><b id="statAvail">32</b><span>Available now</span></div>
+        <div class="stat stat--alert"><b id="statRepairs">14</b><span>Open repairs</span></div>
       </section>
 
       <div class="layout-split">
@@ -772,17 +772,17 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
         </section>
 
         <aside>
-          <div class="section-head"><h3>Rent</h3></div>
-          <div class="card rent-due">
-            <p class="small muted" style="margin-bottom:4px">Due 5 October 2026</p>
-            <div class="amount">&#8377;18,500</div>
-            <p class="small muted">Flat 402, Shanti Residency · October rent</p>
+          <div class="section-head" id="rentHead"><h3>Rent</h3></div>
+          <div class="card rent-due" id="rentCard">
+            <p class="small muted" style="margin-bottom:4px" id="rentDue">Due 5 October 2026</p>
+            <div class="amount" id="rentAmount">&#8377;18,500</div>
+            <p class="small muted" id="rentUnit">Flat 402, Shanti Residency · October rent</p>
             <button class="btn btn-wide btn-sm" type="button" id="payRent">Pay rent</button>
           </div>
 
           <div class="section-head">
             <h3>Maintenance</h3>
-            <a class="small" href="#raise">Raise a request</a>
+            <a class="small" href="#raise" id="raiseLink">Raise a request</a>
           </div>
           <div class="card tickets" id="tickets"></div>
         </aside>
@@ -827,191 +827,10 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
   </div>
 </div>
 
-<script>
-/* ------------------------------------------------------------------
-   Demo data. Replace with API responses once the backend exists.
------------------------------------------------------------------- */
-const PROPERTIES = [
-  { id: 'p1', name: 'Shanti Residency', unit: 'Flat 402', area: 'Krishna Nagar, Mathura',
-    type: 'residential', status: 'let', rent: 18500, beds: 3, baths: 2, size: '1,180 sq ft', furnished: true },
-  { id: 'p2', name: 'Krishna Plaza', unit: 'Shop 7', area: 'Masani Road, Mathura',
-    type: 'commercial', status: 'available', rent: 42000, size: '640 sq ft', frontage: 'Main road', furnished: false },
-  { id: 'p3', name: 'Yamuna Heights', unit: 'Flat 106', area: 'Govardhan Road, Mathura',
-    type: 'residential', status: 'available', rent: 14000, beds: 2, baths: 2, size: '890 sq ft', furnished: true },
-  { id: 'p4', name: 'Vrindavan Greens', unit: 'Villa 12', area: 'Chhatikara, Vrindavan',
-    type: 'residential', status: 'available', rent: 36000, beds: 4, baths: 3, size: '2,150 sq ft', furnished: false },
-  { id: 'p5', name: 'Radha Business Hub', unit: 'Office 3B', area: 'NH-19 Bypass, Mathura',
-    type: 'commercial', status: 'available', rent: 55000, size: '1,400 sq ft', frontage: 'Second floor', furnished: true },
-  { id: 'p6', name: 'Gokul Enclave', unit: 'Flat 8', area: 'Gokul, Mathura',
-    type: 'residential', status: 'let', rent: 11500, beds: 2, baths: 1, size: '720 sq ft', furnished: false }
-];
-
-const TICKETS = [
-  { title: 'Kitchen tap leaking', unit: 'Flat 402', raised: '2 days ago', state: 'progress' },
-  { title: 'Bedroom light flickering', unit: 'Flat 402', raised: '5 days ago', state: 'open' },
-  { title: 'Main door lock replaced', unit: 'Flat 402', raised: '3 weeks ago', state: 'closed' }
-];
-
-const FAVS = 'estate_favs';
-const SESSION = 'estate_session';
-
-const money = n => '\u20B9' + n.toLocaleString('en-IN');
-const favs = () => JSON.parse(localStorage.getItem(FAVS) || '[]');
-const saveFavs = list => localStorage.setItem(FAVS, JSON.stringify(list));
-
-/* ---- Session ---- */
-(function loadSession() {
-  const raw = localStorage.getItem(SESSION);
-  if (!raw) return;                       // a real app would redirect to login here
-  const user = JSON.parse(raw);
-  const initials = user.name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
-  document.getElementById('railName').textContent = user.name;
-  document.getElementById('railAvatar').textContent = initials;
-  document.getElementById('railRole').textContent =
-    { tenant: 'Tenant', owner: 'Property owner', admin: 'Administrator' }[user.role] || 'Tenant';
-
-  const hour = new Date().getHours();
-  const part = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('greeting').textContent = part + ', ' + user.name.split(' ')[0];
-})();
-
-document.getElementById('signout').addEventListener('click', function () {
-  localStorage.removeItem(SESSION);
-  window.location.href = 'login.html';
-});
-
-/* ---- Property grid ---- */
-const grid = document.getElementById('grid');
-const noResults = document.getElementById('noResults');
-const count = document.getElementById('count');
-const search = document.getElementById('q');
-let activeFilter = 'all';
-
-function factsFor(p) {
-  const bits = [];
-  if (p.beds) bits.push(p.beds + ' bed');
-  if (p.baths) bits.push(p.baths + ' bath');
-  if (p.size) bits.push(p.size);
-  if (p.frontage) bits.push(p.frontage);
-  bits.push(p.furnished ? 'Furnished' : 'Unfurnished');
-  return bits.map(b => '<li>' + b + '</li>').join('');
-}
-
-function cardFor(p) {
-  const saved = favs().includes(p.id);
-  return '' +
-  '<article class="prop prop--' + p.type + (p.status === 'let' ? ' prop--let' : '') + '">' +
-    '<div class="prop-plan">' +
-      '<button class="fav" type="button" data-id="' + p.id + '" aria-pressed="' + saved + '" ' +
-        'aria-label="' + (saved ? 'Remove' : 'Save') + ' ' + p.name + ' ' + p.unit + '">' +
-        '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">' +
-        '<path d="m12 20-7.5-7a4.5 4.5 0 1 1 7.5-5 4.5 4.5 0 1 1 7.5 5Z"/></svg>' +
-      '</button>' +
-      '<span class="kind">' + (p.type === 'commercial' ? 'Commercial' : 'Residential') + '</span>' +
-    '</div>' +
-    '<div class="prop-body">' +
-      '<h3>' + p.unit + ', ' + p.name + '</h3>' +
-      '<p class="prop-addr">' + p.area + '</p>' +
-      '<ul class="prop-facts">' + factsFor(p) + '</ul>' +
-      '<div class="prop-foot">' +
-        '<span class="rent">' + money(p.rent) + ' <small>/ month</small></span>' +
-        '<span class="badge ' + (p.status === 'let' ? 'badge-closed' : 'badge-progress') + '">' +
-          (p.status === 'let' ? 'Let' : 'Available') + '</span>' +
-      '</div>' +
-    '</div>' +
-  '</article>';
-}
-
-function render() {
-  const term = search.value.trim().toLowerCase();
-  const list = PROPERTIES.filter(function (p) {
-    const matchesFilter =
-      activeFilter === 'all' ? true :
-      activeFilter === 'available' ? p.status === 'available' :
-      activeFilter === 'furnished' ? p.furnished :
-      p.type === activeFilter;
-    const haystack = (p.name + ' ' + p.unit + ' ' + p.area).toLowerCase();
-    return matchesFilter && haystack.includes(term);
-  });
-
-  grid.innerHTML = list.map(cardFor).join('');
-  grid.hidden = list.length === 0;
-  noResults.hidden = list.length !== 0;
-  count.textContent = list.length + ' of ' + PROPERTIES.length + ' shown';
-}
-
-grid.addEventListener('click', function (event) {
-  const button = event.target.closest('.fav');
-  if (!button) return;
-  const id = button.dataset.id;
-  const list = favs();
-  const index = list.indexOf(id);
-  if (index === -1) { list.push(id); } else { list.splice(index, 1); }
-  saveFavs(list);
-  render();
-});
-
-document.querySelectorAll('.chip').forEach(function (chip) {
-  chip.addEventListener('click', function () {
-    activeFilter = chip.dataset.filter;
-    document.querySelectorAll('.chip').forEach(c =>
-      c.setAttribute('aria-pressed', String(c === chip)));
-    render();
-  });
-});
-
-search.addEventListener('input', render);
-
-document.getElementById('clearFilters').addEventListener('click', function () {
-  search.value = '';
-  activeFilter = 'all';
-  document.querySelectorAll('.chip').forEach(c =>
-    c.setAttribute('aria-pressed', String(c.dataset.filter === 'all')));
-  render();
-});
-
-render();
-
-/* ---- Maintenance tickets ---- */
-const ticketBox = document.getElementById('tickets');
-const stateLabel = { open: 'Open', progress: 'In progress', closed: 'Closed' };
-
-function renderTickets() {
-  ticketBox.innerHTML = TICKETS.map(function (t) {
-    return '<div class="ticket">' +
-             '<div class="ticket-top"><b>' + t.title + '</b>' +
-             '<span class="badge badge-' + t.state + '">' + stateLabel[t.state] + '</span></div>' +
-             '<p>' + t.unit + ' · raised ' + t.raised + '</p>' +
-           '</div>';
-  }).join('');
-}
-renderTickets();
-
-const ticketForm = document.getElementById('ticketForm');
-const ticketNotice = document.getElementById('ticketNotice');
-
-ticketForm.addEventListener('submit', function (event) {
-  event.preventDefault();
-  const detail = document.getElementById('detail');
-  const ok = detail.value.trim().length >= 10;
-  document.getElementById('f-detail').classList.toggle('field-error', !ok);
-  if (!ok) { detail.focus(); return; }
-
-  TICKETS.unshift({
-    title: document.getElementById('category').value + ' — ' + detail.value.trim().slice(0, 40),
-    unit: document.getElementById('unit').value.split(',')[0],
-    raised: 'just now',
-    state: 'open'
-  });
-  renderTickets();
-  ticketForm.reset();
-  ticketNotice.textContent = 'Request submitted. You can follow its status under Maintenance.';
-  ticketNotice.classList.add('notice-ok', 'is-visible');
-});
-
-document.getElementById('payRent').addEventListener('click', function () {
-  alert('Online payments arrive with the payment gateway integration planned for the next release.');
-});
-</script>
+<script src="js/data.js"></script>
+<script src="js/store.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/dashboard.js"></script>
 </body>
 </html>
