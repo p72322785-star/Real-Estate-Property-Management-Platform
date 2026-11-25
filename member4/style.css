@@ -30,6 +30,55 @@
   --step-4:  2.75rem;
 }
 
+/* Shared site navigation */
+.site-navbar {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 7%;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.site-navbar .logo {
+  color: #173f35;
+  font: bold 28px Arial, sans-serif;
+  white-space: nowrap;
+}
+
+.site-navbar .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-navbar .nav-links a {
+  color: #333;
+  font: 15px Arial, sans-serif;
+  text-decoration: none;
+}
+
+.site-navbar .nav-links a:hover {
+  color: #b18b4a;
+}
+
+.site-navbar .nav-links .login-btn {
+  padding: 12px 25px;
+  border-radius: 5px;
+  background: #2874a6;
+  color: white;
+}
+
+.site-navbar .nav-links .login-btn:hover {
+  background: #1e3a5f;
+  color: white;
+}
+
 /* 02. Base & typography -------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -648,6 +697,15 @@ a  { color: var(--verd-dark); text-decoration-thickness: 1px; text-underline-off
 }
 
 @media (max-width: 640px) {
+  .site-navbar {
+    flex-direction: column;
+    padding: 18px 20px;
+  }
+  .site-navbar .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+  }
   .topbar { flex-wrap: wrap; padding: 14px 18px; }
   .search { max-width: none; order: 3; width: 100%; }
   .page { padding: 20px 18px 44px; }

@@ -11,16 +11,15 @@
     <header>
         <nav class="navbar">
             <div class="logo">EstateHub</div>
-
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="../index.html">Home</a></li>
                 <li><a href="../member2/properties.html">Properties</a></li>
-                <li><a href="my-properties.html">My Properties</a></li>
-                <li><a href="add-property.html" class="active">Add Property</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="add-property.html">Add Property</a></li>
+                <li><a href="../index.html#categories">Categories</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><a href="../member4/login.html" class="login-btn">Login</a></li>
             </ul>
-
-            <a href="#" class="login-btn">Login</a>
         </nav>
     </header>
 
@@ -29,12 +28,13 @@
         <div class="page-header">
             <h1>Add a New Property</h1>
             <p class="breadcrumb">
-                <a href="index.html">Home</a>
+                <a href="../index.html">Home</a>
                 <span>/</span>
                 <a href="my-properties.html">My Properties</a>
                 <span>/</span>
                 Add Property
             </p>
+            <a href="my-properties.html" class="my-properties-btn">My Properties</a>
         </div>
 
         <section class="form-wrap">
@@ -43,7 +43,7 @@
                 <h2>Property Details</h2>
                 <p class="form-sub">Fill in the details below to list a new property on EstateHub.</p>
 
-                <form>
+                <form id="propertyForm">
 
                     <fieldset>
                         <legend>Basic Information</legend>
@@ -51,12 +51,12 @@
 
                             <div class="form-field full">
                                 <label for="title">Property Title</label>
-                                <input type="text" id="title" name="title" placeholder="e.g. Modern Family House">
+                                <input type="text" id="title" name="title" placeholder="e.g. Modern Family House" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="type">Property Type</label>
-                                <select id="type" name="type">
+                                <select id="type" name="type" required>
                                     <option value="">Choose type</option>
                                     <option>Residential</option>
                                     <option>Commercial</option>
@@ -67,7 +67,7 @@
 
                             <div class="form-field">
                                 <label for="purpose">Purpose</label>
-                                <select id="purpose" name="purpose">
+                                <select id="purpose" name="purpose" required>
                                     <option value="">Buy / Rent</option>
                                     <option>For Sale</option>
                                     <option>For Rent</option>
@@ -76,7 +76,7 @@
 
                             <div class="form-field">
                                 <label for="price">Price (Γé╣)</label>
-                                <input type="number" id="price" name="price" placeholder="e.g. 7500000">
+                                <input type="number" id="price" name="price" placeholder="e.g. 7500000" min="1" required>
                             </div>
 
                             <div class="form-field">
@@ -97,17 +97,17 @@
 
                             <div class="form-field full">
                                 <label for="address">Address</label>
-                                <input type="text" id="address" name="address" placeholder="Street, Locality">
+                                <input type="text" id="address" name="address" placeholder="Street, Locality" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="city">City</label>
-                                <input type="text" id="city" name="city" placeholder="e.g. Mathura">
+                                <input type="text" id="city" name="city" placeholder="e.g. Mathura" required>
                             </div>
 
                             <div class="form-field">
                                 <label for="state">State</label>
-                                <input type="text" id="state" name="state" placeholder="e.g. Uttar Pradesh">
+                                <input type="text" id="state" name="state" placeholder="e.g. Uttar Pradesh" required>
                             </div>
 
                         </div>
@@ -119,17 +119,17 @@
 
                             <div class="form-field">
                                 <label for="beds">Bedrooms</label>
-                                <input type="number" id="beds" name="beds" placeholder="e.g. 3">
+                                <input type="number" id="beds" name="beds" placeholder="e.g. 3" min="0">
                             </div>
 
                             <div class="form-field">
                                 <label for="baths">Bathrooms</label>
-                                <input type="number" id="baths" name="baths" placeholder="e.g. 2">
+                                <input type="number" id="baths" name="baths" placeholder="e.g. 2" min="0">
                             </div>
 
                             <div class="form-field">
                                 <label for="area">Area (sqft)</label>
-                                <input type="number" id="area" name="area" placeholder="e.g. 1800">
+                                <input type="number" id="area" name="area" placeholder="e.g. 1800" min="1">
                             </div>
 
                             <div class="form-field">
@@ -167,10 +167,11 @@
                     <fieldset>
                         <legend>Photos</legend>
                         <div class="form-grid">
-                            <div class="upload-box">
-                                <strong>Click to upload or drag photos here</strong>
+                            <label class="upload-box" for="photos">
+                                <strong>Click to upload photos</strong>
                                 PNG or JPG, up to 5 photos
-                            </div>
+                                <input type="file" id="photos" name="photos" accept="image/png,image/jpeg" multiple>
+                            </label>
                         </div>
                     </fieldset>
 
@@ -200,10 +201,10 @@
 
             <div class="footer-links">
                 <h3>Quick Links</h3>
-                <a href="../member1/index.html">Home</a>
+                <a href="../index.html">Home</a>
                 <a href="../member2/properties.html">Properties</a>
                 <a href="my-properties.html">My Properties</a>
-                <a href="../member1/about.html">About</a>
+                <a href="../about.html">About</a>
             </div>
 
             <div class="footer-contact">
@@ -221,5 +222,6 @@
 
     </footer>
 
+    <script src="member3.js"></script>
 </body>
 </html>
